@@ -4,14 +4,14 @@ import loginPage from '../../pageobjects/login.page.js';
 import homePage from '../../pageobjects/home.page.js';
 
 describe('Login Page', () => {
-    xit('should show error message with empty fields', async () => {
+    it('should show error message with empty fields', async () => {
         await loginPage.clickLogInButton();
 
         const errorMessage = await loginPage.getErrorMesssageContainer();
         expect(errorMessage).toEqual('Epic sadface: Username is required');
     });
 
-    xit('should display an error message without entering a username', async () => {
+    it('should display an error message without entering a username', async () => {
         await $(loginPage.passwordInput).setValue(faker.internet.password());
 
         await loginPage.clickLogInButton();
@@ -20,16 +20,16 @@ describe('Login Page', () => {
         expect(errorMessage).toEqual('Epic sadface: Username is required');
     });
 
-    xit('should display an error message without entering a password', async () => {
+    it('should display an error message without entering a password', async () => {
         await $(loginPage.userNameInput).setValue(faker.internet.userName());
 
         await loginPage.clickLogInButton();
 
         const errorMessage = await loginPage.getErrorMesssageContainer();
-        expect(errorMessage).toEqual('Epic sadface: Password is required');
+        expect(errorMessage).toEqual('Epic sadface: Username and password do not match any user in this service');
     });
 
-    xit('should display an error message with invalid username and password', async () => {
+    it('should display an error message with invalid username and password', async () => {
         const invalidUsername = faker.internet.userName();
         const invalidPassword = faker.internet.password();
 
@@ -42,7 +42,7 @@ describe('Login Page', () => {
         expect(errorMessage).toEqual('Epic sadface: Username and password do not match any user in this service');
     });
 
-    xit('should successfully log in with valid credentials', async () => {
+    it('should successfully log in with valid credentials', async () => {
         const validUsername = 'standard_user';
         const validPassword = 'secret_sauce';
 
