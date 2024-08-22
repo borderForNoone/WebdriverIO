@@ -3,10 +3,10 @@ name: CI
 on:
   push:
     branches:
-      - main  # or your default branch
+      - main  
   pull_request:
     branches:
-      - main  # or your default branch
+      - main  
 
 jobs:
   build:
@@ -19,7 +19,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'  # Specify the Node.js version
+          node-version: '16' 
 
       - name: Install dependencies
         run: npm install
@@ -27,15 +27,15 @@ jobs:
       - name: Run tests
         run: npm test
 
-      - name: Generate test reports
-        run: npm run generate-reports  # Adjust this based on how you generate reports
+      - name: Generate Allure report
+        run: npx allure generate allure-results --clean -o allure-report
 
-      - name: Deploy reports to GitHub Pages
+      - name: Deploy Allure report to GitHub Pages
         if: success()
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./path-to-reports  # Adjust this to the path where your reports are generated
+          publish_dir: ./allure-report
           publish_branch: gh-pages
 
       - name: Output GitHub Pages URL
