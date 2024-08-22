@@ -39,5 +39,4 @@ jobs:
           publish_branch: gh-pages
 
       - name: Output GitHub Pages URL
-        run: echo "Your GitHub Pages site is available at: https://<username>.github.io/<repository>/"
-        
+        run: echo "Your GitHub Pages site is available at: https://${{ github.repository_owner }}.github.io/${{ github.repository }}/"
