@@ -1,0 +1,42 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main  # or your default branch
+  pull_request:
+    branches:
+      - main  # or your default branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'  # Specify the Node.js version
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run tests
+        run: npm test
+
+      - name: Generate test reports
+        run: npm run generate-reports  # Adjust this based on how you generate reports
+
+      - name: Deploy reports to GitHub Pages
+        if: success()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./path-to-reports  # Adjust this to the path where your reports are generated
+          publish_branch: gh-pages
+
+      - name: Output GitHub Pages URL
+        run: echo "Your GitHub Pages site is available at: https://<username>.github.io/<repository>/"
