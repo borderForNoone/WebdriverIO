@@ -1,39 +1,62 @@
-name: CI
+name: WebdriverIO Test and Deploy
 
 on:
   push:
     branches:
-      - main  
+      - main  # Change to your main branch if necessary
   pull_request:
     branches:
-      - main  
+      - main
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+    # Step 1: Checkout the code
+    - name: Checkout code
+      uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18' 
+    # Step 2: Set up Node.js environment
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '16' # Specify the Node.js version you're using
 
-      - name: Install dependencies
-        run: npm install
+    # Step 3: Install dependencies
+    - name: Install dependencies
+      run: npm install
 
-      - name: Run tests
-        run: npm run wdio
+    # Step 4: Run WebdriverIO tests
+    - name: Run WebdriverIO tests
+      run: npm run wdio
 
-      - name: Generate Allure report
-        run: npx allure generate allure-results --clean -o allure-report
+    # Step 5: Upload test results (Allure reports)
+    - name: Upload Allure Results
+      if: always()
+      uses: actions/upload-artifact@v3
+      with:
+        name: allure-results
+        path: ./allure-results
 
-      - name: Deploy Allure report to GitHub Pages
-        if: success()
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./allure-report
-          publish_branch: gh-pages
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout the code
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Step 2: Deploy to GitHub Pages
+    - name: Deploy Allure report to GitHub Pages
+      if: success()
+      run: |
+        git config --global user.name "${{ github.actor }}"
+        git config --global user.email "${{ github.actor }}@users.noreply.github.com"
+        git clone --branch=gh-pages https://github.com/${{ github.repository }}.git gh-pages
+        cp -R allure-report/* gh-pages/
+        cd gh-pages
+        git add .
+        git commit -m "Deploy Allure report"
+        git push https://github.com/${{ github.repository }}.git gh-pages
