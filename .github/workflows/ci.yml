@@ -40,7 +40,7 @@ jobs:
 
     # Step 5: Run WebdriverIO tests in headless mode
     - name: Run WebdriverIO tests
-      run: npm run wdio
+      run: npx wdio run ./wdio.conf.ts --chromeOptions.args="--no-sandbox --disable-dev-shm-usage --headless"
 
     # Step 6: Upload test results (Allure reports)
     - name: Upload Allure Results
