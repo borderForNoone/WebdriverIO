@@ -23,15 +23,15 @@ jobs:
       with:
         node-version: '20.13.1'
 
-    # Step 4: Install dependencies
+    # Step 3: Install dependencies
     - name: Install dependencies
       run: npm install
 
-    # Step 5: Run WebdriverIO tests in headless mode
+    # Step 4: Run WebdriverIO tests in headless mode
     - name: Run WebdriverIO tests
-      run: npx run wdio
+      run: npx wdio run wdio.conf.js
 
-    # Step 6: Upload test results (Allure reports)
+    # Step 5: Upload test results (Allure reports)
     - name: Upload Allure Results
       if: always()
       uses: actions/upload-artifact@v3
