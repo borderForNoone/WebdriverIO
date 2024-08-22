@@ -17,21 +17,32 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    # Step 2: Set up Node.js environment
+    # Step 2: Set up Node.js (LTS version 20.13.1)
     - name: Set up Node.js
       uses: actions/setup-node@v3
       with:
-        node-version: '20.13.1' 
+        node-version: '20.13.1'
 
-    # Step 3: Install dependencies
+    # Step 3: Install Chrome dependencies
+    - name: Install Chrome dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y wget gnupg --no-install-recommends
+        wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+        sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+        sudo apt-get update
+        sudo apt-get install -y google-chrome-stable --no-install-recommends
+        google-chrome --version
+
+    # Step 4: Install dependencies
     - name: Install dependencies
       run: npm install
 
-    # Step 4: Run WebdriverIO tests
+    # Step 5: Run WebdriverIO tests in headless mode
     - name: Run WebdriverIO tests
       run: npm run wdio
 
-    # Step 5: Upload test results (Allure reports)
+    # Step 6: Upload test results (Allure reports)
     - name: Upload Allure Results
       if: always()
       uses: actions/upload-artifact@v3
@@ -48,7 +59,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    # Step 2: Deploy to GitHub Pages
+    # Step 2: Deploy Allure report to GitHub Pages
     - name: Deploy Allure report to GitHub Pages
       if: success()
       run: |
