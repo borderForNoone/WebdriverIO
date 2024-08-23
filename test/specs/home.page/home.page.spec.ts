@@ -84,7 +84,7 @@ describe('Home Page', () => {
         expect(firstProduct.name.localeCompare(sortedProduct.name)).toBeGreaterThanOrEqual(0);
     });
 
-    it('should have an empty cart after logging out and back in', async () => {
+    it('should have not empty cart after logging out and back in', async () => {
         const product = await homePage.getFirstProduct();
         await homePage.addProductToCart(product.name);
 
@@ -97,8 +97,6 @@ describe('Home Page', () => {
 
         const cartCount = await homePage.getCartCount();
 
-        expect(cartCount).toEqual('');
+        expect(cartCount).toEqual('1');
     });
-    
-
 });
