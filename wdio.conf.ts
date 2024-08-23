@@ -59,9 +59,11 @@ export const config: Options.Testrunner = {
     // https://saucelabs.com/platform/platform-configurator
     //
     capabilities: [{
-        // capabilities for local browser web tests
-        browserName: 'chrome', // or "firefox", "microsoftedge", "safari"
-        
+        maxInstances: 5,
+        browserName: 'chrome',
+        'goog:chromeOptions': {
+            args: ['--headless', '--disable-gpu', '--no-sandbox', '--disable-dev-shm-usage']
+        }
     }],
 
     //
