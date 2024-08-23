@@ -47,6 +47,3 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./allure-report
-
-      - name: Output Allure Report URL
-        run: echo "Allure report is available at: https://<your-username>.github.io/<your-repo-name>/"
