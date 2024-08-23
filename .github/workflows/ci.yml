@@ -60,11 +60,14 @@ jobs:
       - name: Build Docker image
         run: docker build -t webdriverio-tests .
 
-      - name: Run WebdriverIO tests in Docker
+      - name: Run WebdriverIO tests in Docker and store container ID
+        id: run-docker
         run: |
-          docker run --rm webdriverio-tests
-          
-      - name: Generate Allure report from Docker
+          CONTAINER_ID=$(docker run -d webdriverio-tests)
+          echo "CONTAINER_ID=$CONTAINER_ID" >> $GITHUB_ENV
+          docker wait $CONTAINER_ID
+
+      - name: Copy Allure report from Docker
         if: always()
         run: |
-          docker cp $(docker ps -q -l):/usr/src/app/allure-report ./allure-report
+          docker cp ${{ env.CONTAINER_ID }}:/usr/src/app/allure-report ./allure-report
