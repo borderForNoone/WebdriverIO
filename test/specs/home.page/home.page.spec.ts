@@ -41,7 +41,6 @@ describe('Home Page', () => {
         const isCartBadgePresent = await $(homePage.cartBadge).isExisting();
         expect(isCartBadgePresent).toBe(false);
     });
-    
 
     xit('should sort products by price from low to high', async () => {
         const initialProduct = await homePage.getFirstProduct();
@@ -101,5 +100,5 @@ describe('Home Page', () => {
         expect(cartCount).toEqual('');
     });
     
-    
+
 });
