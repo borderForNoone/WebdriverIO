@@ -5,6 +5,8 @@
         readonly sortDropdown = '[data-test="product-sort-container"]';
         readonly productName = '.inventory_item_name';
         readonly productPrice = '.inventory_item_price';
+        readonly menuButton = '#react-burger-menu-btn';
+        readonly logoutButton = '#logout_sidebar_link';
 
         async addProductToCart(productName: string) {
             const productElement = $(`//*[text()='${productName}']/ancestor::div[@class="inventory_item"]//button`);
@@ -17,7 +19,7 @@
         }
 
         async getCartCount() {
-            const cartBadgeElement = await $(this.cartBadge);
+            const cartBadgeElement = $(this.cartBadge);
             return await cartBadgeElement.getText();
         }
 
@@ -33,6 +35,16 @@
                 name: await firstProduct.$(this.productName).getText(),
                 price: await firstProduct.$(this.productPrice).getText()
             };
+        }
+
+        async openMenu() {
+            const menuBtn = $(this.menuButton);
+            await menuBtn.click();
+        }
+
+        async clickLogoutButton() {
+            const logoutBtn = $(this.logoutButton);
+            await logoutBtn.click();
         }
     }
 
