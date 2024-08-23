@@ -1,4 +1,4 @@
-name: WebdriverIO Tests
+name: WebdriverIO Tests and Allure Report Deployment
 
 on:
   push:
@@ -40,3 +40,13 @@ jobs:
         with:
           name: allure-report
           path: allure-report
+
+      - name: Deploy Allure Report to GitHub Pages
+        if: success()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./allure-report
+
+      - name: Output Allure Report URL
+        run: echo "Allure report is available at: https://<your-username>.github.io/<your-repo-name>/"
