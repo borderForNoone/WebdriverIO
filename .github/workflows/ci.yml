@@ -65,9 +65,12 @@ jobs:
         run: |
           CONTAINER_ID=$(docker run -d webdriverio-tests)
           echo "CONTAINER_ID=$CONTAINER_ID" >> $GITHUB_ENV
-          docker wait $CONTAINER_ID
+          docker wait $CONTAINER_ID || true
+
+      - name: Verify Allure report exists
+        run: |
+          docker exec ${{ env.CONTAINER_ID }} ls -l /usr/src/app/allure-report || true
 
       - name: Copy Allure report from Docker
-        if: always()
         run: |
-          docker cp ${{ env.CONTAINER_ID }}:/usr/src/app/allure-report ./allure-report
+          docker cp ${{ env.CONTAINER_ID }}:/usr/src/app/allure-report ./allure-report || true
