@@ -49,3 +49,21 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./allure-report
+
+  docker-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build Docker image
+        run: docker build -t webdriverio-tests .
+
+      - name: Run WebdriverIO tests in Docker
+        run: |
+          docker run --rm webdriverio-tests
+          
+      - name: Generate Allure report from Docker
+        run: |
+          docker cp $(docker ps -q -l):/usr/src/app/allure-report ./allure-report
