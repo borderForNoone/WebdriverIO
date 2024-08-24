@@ -44,7 +44,7 @@ describe('Сheckout Page', () => {
         expect(errorMessage).toContain('Error: Last Name is required');
     });
 
-    it('should display an error message without entering a Last Name', async () => {
+    it('should display an error message without entering a Postal Code', async () => {
         await $(checkoutPage.firstNameInput).setValue(faker.person.firstName());
         await $(checkoutPage.lastNameInput).setValue(faker.person.lastName());
 
