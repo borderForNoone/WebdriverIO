@@ -8,7 +8,7 @@ import { faker } from '@faker-js/faker';
 const validUsername = 'standard_user';
 const validPassword = 'secret_sauce';
 
-describe('Home Page', () => {
+describe('Сheckout Page', () => {
     beforeEach(async () => {
         await browser.url('');
 
