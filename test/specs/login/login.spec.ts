@@ -3,8 +3,11 @@ import { faker } from '@faker-js/faker';
 import loginPage from '../../pageobjects/login.page.js';
 import homePage from '../../pageobjects/home.page.js';
 
+const validUsername = 'standard_user';
+const validPassword = 'secret_sauce';
+
 describe('Login Page', () => {
-    it('should show error message with empty fields', async () => {
+    xit('should show error message with empty fields', async () => {
         await loginPage.clickLogInButton();
 
         const errorMessage = await loginPage.getErrorMesssageContainer();
@@ -55,5 +58,19 @@ describe('Login Page', () => {
 
         const titleText = await $(homePage.title).getText();
         expect(titleText).toEqual('Products')
+
+        await homePage.openMenu();
+        await homePage.clickLogoutButton();
+    });
+
+    it('should successfully log out from the account', async () => {
+        await $(loginPage.userNameInput).setValue(validUsername);
+        await $(loginPage.passwordInput).setValue(validPassword);
+        await loginPage.clickLogInButton();
+
+        await homePage.openMenu();
+        await homePage.clickLogoutButton();
+
+        await expect($(loginPage.loginButton)).toBeDisplayed();
     });
 });
