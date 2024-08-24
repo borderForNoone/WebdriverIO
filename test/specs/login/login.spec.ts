@@ -7,7 +7,7 @@ const validUsername = 'standard_user';
 const validPassword = 'secret_sauce';
 
 describe('Login Page', () => {
-    xit('should show error message with empty fields', async () => {
+    it('should show error message with empty fields', async () => {
         await loginPage.clickLogInButton();
 
         const errorMessage = await loginPage.getErrorMesssageContainer();
