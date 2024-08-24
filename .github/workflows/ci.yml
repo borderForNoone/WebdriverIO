@@ -34,7 +34,13 @@ jobs:
           
       - name: Generate Allure report
         if: always()
-        run: npm run allure:generate
+        run: |
+          if [ -d "allure-results" ]; then
+            npm run allure:generate
+          else
+            echo "allure-results directory not found"
+            exit 1
+          fi
 
       - name: Upload Allure report as artifact
         if: always()
