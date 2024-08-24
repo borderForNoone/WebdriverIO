@@ -43,6 +43,18 @@ jobs:
           name: allure-report
           path: allure-report
 
+      - name: Clear gh-pages branch
+        if: always()
+        run: |
+          git clone --branch=gh-pages https://github.com/${{ github.repository }} gh-pages
+          cd gh-pages
+          rm -rf *
+          git config user.email "github-actions@github.com"
+          git config user.name "github-actions"
+          git add .
+          git commit -m "Clear old Allure reports"
+          git push origin gh-pages
+
       - name: Deploy Allure Report to GitHub Pages
         if: always()
         uses: peaceiris/actions-gh-pages@v3
