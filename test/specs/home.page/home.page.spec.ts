@@ -60,17 +60,17 @@ describe('Home Page', () => {
         expect(Number.parseFloat(sortedPrice.replace('$', ''))).toBeLessThanOrEqual(Number.parseFloat(initialPrice.replace('$', '')));
     });
 
-    it('should sort products by price from low to high', async () => {
+    it('should sort products by price from high to low', async () => {
         const initialProduct = await homePage.getFirstProduct();
         const initialPrice = initialProduct.price;
-
-        await homePage.sortProductsBy('Price (low to high)');
-
+    
+        await homePage.sortProductsBy('Price (high to low)');
+    
         const sortedProduct = await homePage.getFirstProduct();
         const sortedPrice = sortedProduct.price;
-
-        expect(Number.parseFloat(sortedPrice.replace('$', ''))).toBeLessThanOrEqual(Number.parseFloat(initialPrice.replace('$', '')));
-    });
+    
+        expect(Number.parseFloat(sortedPrice.replace('$', ''))).toBeGreaterThanOrEqual(Number.parseFloat(initialPrice.replace('$', '')));
+    });    
 
     it('should sort products by name from A to Z', async () => {
         await homePage.sortProductsBy('Name (A to Z)');
